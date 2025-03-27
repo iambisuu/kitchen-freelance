@@ -4,7 +4,7 @@ import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa';
 
 export default function ProfileHeader() {
   return (
-    <div className="flex flex-col md:flex-row items-center ml-28 md:items-start gap-10 mb-12">
+    <div className="flex flex-col md:flex-row items-center sm:ml-28 md:items-start gap-10 mb-12">
       {/* Profile Image with Gradient Border */}
       <div className="relative w-32 h-32 md:w-40 md:h-40 flex-shrink-0">
   <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 p-1">
