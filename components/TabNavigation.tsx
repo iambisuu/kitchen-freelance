@@ -1,14 +1,10 @@
 'use client';
 
-import { useState } from 'react';
-import { FaRegSquare, FaFilm, FaTag } from 'react-icons/fa';
-
 export default function TabNavigation() {
-  const [activeTab, setActiveTab] = useState('posts');
   
   return (
     <div className="border-t border-gray-200">
-      <div className="flex justify-center">
+      {/* <div className="flex justify-center">
         <button 
           className={`flex items-center gap-2 px-10 py-4 text-xs font-medium uppercase ${
             activeTab === 'posts' 
@@ -44,7 +40,7 @@ export default function TabNavigation() {
           <FaTag size={14} />
           <span>Tagged</span>
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
