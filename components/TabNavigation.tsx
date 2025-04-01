@@ -1,4 +1,3 @@
-// components/TabNavigation.tsx
 'use client';
 
 import { useState } from 'react';
@@ -9,7 +8,7 @@ export default function TabNavigation() {
   
   return (
     <div className="border-t border-gray-200">
-      {/* <div className="flex justify-center">
+      <div className="flex justify-center">
         <button 
           className={`flex items-center gap-2 px-10 py-4 text-xs font-medium uppercase ${
             activeTab === 'posts' 
@@ -45,7 +44,7 @@ export default function TabNavigation() {
           <FaTag size={14} />
           <span>Tagged</span>
         </button>
-      </div> */}
+      </div>
     </div>
   );
 }

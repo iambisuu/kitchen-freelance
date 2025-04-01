@@ -1,7 +1,7 @@
 // components/ImageModal.tsx
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import { FaHeart, FaComment, FaBookmark, FaShare } from 'react-icons/fa';
 
@@ -31,6 +31,11 @@ export default function ImageModal({
 }: ImageModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+    setTimeout(onClose, 300); // Delay closing to allow animation to finish
+  }, [onClose]);
+  
   useEffect(() => {
     // Small delay to trigger the transition
     setTimeout(() => setIsOpen(true), 10);
@@ -48,12 +53,7 @@ export default function ImageModal({
       document.removeEventListener('keydown', handleEscPress);
       document.body.style.overflow = 'auto';
     };
-  }, []);
-  
-  const handleClose = () => {
-    setIsOpen(false);
-    setTimeout(onClose, 300); // Delay closing to allow animation to finish
-  };
+  }, [handleClose]);
 
   return (
     <div className={`fixed inset-0 bg-black z-50 flex items-center justify-center p-4 transition-all duration-300 ${isOpen ? 'bg-opacity-80' : 'bg-opacity-0'}`}>
@@ -73,13 +73,19 @@ export default function ImageModal({
             {isMultiple && (
               <>
                 <button 
-                  onClick={(e) => { e.stopPropagation(); onPrevImage && onPrevImage(); }}
+                  onClick={(e) => { 
+                    e.stopPropagation(); 
+                    if (onPrevImage) onPrevImage(); 
+                  }}
                   className="absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-colors"
                 >
                   ←
                 </button>
                 <button 
-                  onClick={(e) => { e.stopPropagation(); onNextImage && onNextImage(); }}
+                  onClick={(e) => { 
+                    e.stopPropagation(); 
+                    if (onNextImage) onNextImage(); 
+                  }}
                   className="absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-colors"
                 >
                   →

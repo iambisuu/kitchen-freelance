@@ -5,8 +5,22 @@ import { useState } from 'react';
 import Image from 'next/image';
 import ImageModal from './ImageModal';
 
+// Define interfaces for your portfolio item data structure
+interface PortfolioImage {
+  src: string;
+  alt: string;
+}
+
+interface PortfolioItem {
+  id: number;
+  isMultiple: boolean;
+  images: PortfolioImage[];
+  category: string;
+  displaySrc: string;
+}
+
 // Sample portfolio items with multiple images in some cells
-const portfolioItems = [
+const portfolioItems: PortfolioItem[] = [
   {
     id: 1,
     isMultiple: true,
@@ -21,10 +35,13 @@ const portfolioItems = [
   {
     id: 2,
     isMultiple: true,
-    images: [{ src: 'https://images.unsplash.com/photo-1741851374666-1bc849a293c3?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxN3x8fGVufDB8fHx8fA%3D%3D',
-         alt: 'Portfolio image 2' },{
-            src:"https://images.unsplash.com/photo-1741559935512-3b018321e35f?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D"
-         }],
+    images: [{ 
+      src: 'https://images.unsplash.com/photo-1741851374666-1bc849a293c3?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxN3x8fGVufDB8fHx8fA%3D%3D',
+      alt: 'Portfolio image 2' 
+    }, {
+      src: "https://images.unsplash.com/photo-1741559935512-3b018321e35f?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
+      alt: 'Portfolio image 2-2'
+    }],
     category: 'portrait',
     displaySrc: '/split3/2.png',
   },
@@ -41,12 +58,17 @@ const portfolioItems = [
   {
     id: 4,
     isMultiple: true,
-    images: [{ src: 'https://plus.unsplash.com/premium_photo-1741194731808-bc78113545ce?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0MHx8fGVufDB8fHx8fA%3D%3D', alt: 'Portfolio image 4' },{
-        src: 'https://plus.unsplash.com/premium_photo-1738772657819-8f58f03017b7?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1OHx8fGVufDB8fHx8fA%3D%3D'
+    images: [{ 
+      src: 'https://plus.unsplash.com/premium_photo-1741194731808-bc78113545ce?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0MHx8fGVufDB8fHx8fA%3D%3D', 
+      alt: 'Portfolio image 4' 
+    }, {
+      src: 'https://plus.unsplash.com/premium_photo-1738772657819-8f58f03017b7?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1OHx8fGVufDB8fHx8fA%3D%3D',
+      alt: 'Portfolio image 4-2'
     }],
     category: 'landscape',
     displaySrc: '/split3/4.png',
   },
+  // ... rest of the portfolio items remain unchanged
   {
     id: 5,
     isMultiple: true,
@@ -197,10 +219,10 @@ const portfolioItems = [
 ];
 
 export default function PortfolioGrid() {
-  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  const handleImageClick = (item: any) => {
+  const handleImageClick = (item: PortfolioItem) => {
     setSelectedItem(item);
     setSelectedImageIndex(0);
   };
@@ -228,45 +250,44 @@ export default function PortfolioGrid() {
   };
 
   return (
-<div className="w-[95%]">
-  <div className="grid grid-cols-1 ml-4 max-sm:ml-12 sm:grid-cols-2 md:grid-cols-4 gap-y-[1px] gap-x-0.5">
-    {portfolioItems.map((item) => (
-      <div 
-        key={item.id} 
-        className="aspect-square relative cursor-pointer group overflow-hidden h-72"
-        onClick={() => handleImageClick(item)}
-      >
-        <Image
-          src={item.displaySrc}
-          alt={item.images[0].alt || 'Default alt text'}
-          fill
-          className="object-cover hover:scale-105 transition-transform duration-300"
-        />
-      
-        {/* Hover overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity flex items-center justify-center opacity-0 group-hover:opacity-30">
-        </div>
+    <div className="w-[95%]">
+      <div className="grid grid-cols-1 ml-4 max-sm:ml-12 sm:grid-cols-2 md:grid-cols-4 gap-y-[1px] gap-x-0.5">
+        {portfolioItems.map((item) => (
+          <div 
+            key={item.id} 
+            className="aspect-square relative cursor-pointer group overflow-hidden h-72"
+            onClick={() => handleImageClick(item)}
+          >
+            <Image
+              src={item.displaySrc}
+              alt={item.images[0].alt || 'Default alt text'}
+              fill
+              className="object-cover hover:scale-105 transition-transform duration-300"
+            />
+          
+            {/* Hover overlay */}
+            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity flex items-center justify-center opacity-0 group-hover:opacity-30">
+            </div>
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
-  
-  {selectedItem && (
-    <ImageModal 
-      image={{
-        id: selectedItem.id,
-        src: selectedItem.images[selectedImageIndex].src,
-        alt: selectedItem.images[selectedImageIndex].alt,
-        category: selectedItem.category
-      }}
-      onClose={handleCloseModal}
-      isMultiple={selectedItem.isMultiple}
-      onPrevImage={handlePrevImage}
-      onNextImage={handleNextImage}
-      currentIndex={selectedImageIndex}
-      totalImages={selectedItem.images.length}
-    />
-  )}
-</div>
+      
+      {selectedItem && (
+        <ImageModal 
+          image={{
+            id: selectedItem.id,
+            src: selectedItem.images[selectedImageIndex].src,
+            alt: selectedItem.images[selectedImageIndex].alt,
+            category: selectedItem.category
+          }}
+          onClose={handleCloseModal}
+          isMultiple={selectedItem.isMultiple}
+          onPrevImage={handlePrevImage}
+          onNextImage={handleNextImage}
+          currentIndex={selectedImageIndex}
+          totalImages={selectedItem.images.length}
+        />
+      )}
+    </div>
   );
 }
-
