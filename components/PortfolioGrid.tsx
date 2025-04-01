@@ -1,222 +1,9 @@
-// components/PortfolioGrid.tsx
 'use client';
 
 import { useState } from 'react';
 import Image from 'next/image';
 import ImageModal from './ImageModal';
-
-// Define interfaces for your portfolio item data structure
-interface PortfolioImage {
-  src: string;
-  alt: string;
-}
-
-interface PortfolioItem {
-  id: number;
-  isMultiple: boolean;
-  images: PortfolioImage[];
-  category: string;
-  displaySrc: string;
-}
-
-// Sample portfolio items with multiple images in some cells
-const portfolioItems: PortfolioItem[] = [
-  {
-    id: 1,
-    isMultiple: true,
-    images: [
-      { src: 'https://images.unsplash.com/photo-1741851373794-ab6b44b367c9?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxNnx8fGVufDB8fHx8fA%3D%3D', alt: 'Portfolio image 1' },
-      { src: 'https://images.unsplash.com/photo-1724963843259-3b0727c53b0c?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw3M3x8fGVufDB8fHx8fA%3D%3D', alt: 'Portfolio image 2' },
-      { src: '/portfolio/image3.jpg', alt: 'Portfolio image 3' },
-    ],
-    category: 'landscape',
-    displaySrc: '/split3/1.png',
-  },
-  {
-    id: 2,
-    isMultiple: true,
-    images: [{ 
-      src: 'https://images.unsplash.com/photo-1741851374666-1bc849a293c3?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxN3x8fGVufDB8fHx8fA%3D%3D',
-      alt: 'Portfolio image 2' 
-    }, {
-      src: "https://images.unsplash.com/photo-1741559935512-3b018321e35f?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
-      alt: 'Portfolio image 2-2'
-    }],
-    category: 'portrait',
-    displaySrc: '/split3/2.png',
-  },
-  {
-    id: 3,
-    isMultiple: true,
-    images: [
-      { src: 'https://images.unsplash.com/photo-1741926376117-85ec2cef9714?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyMHx8fGVufDB8fHx8fA%3D%3D', alt: 'Portfolio image 3' },
-      { src: 'https://images.unsplash.com/photo-1741920852881-5284c70305bd?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Mnx8fGVufDB8fHx8fA%3D%3D', alt: 'Portfolio image 4' },
-    ],
-    category: 'city',
-    displaySrc: '/split3/3.png',
-  },
-  {
-    id: 4,
-    isMultiple: true,
-    images: [{ 
-      src: 'https://plus.unsplash.com/premium_photo-1741194731808-bc78113545ce?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0MHx8fGVufDB8fHx8fA%3D%3D', 
-      alt: 'Portfolio image 4' 
-    }, {
-      src: 'https://plus.unsplash.com/premium_photo-1738772657819-8f58f03017b7?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1OHx8fGVufDB8fHx8fA%3D%3D',
-      alt: 'Portfolio image 4-2'
-    }],
-    category: 'landscape',
-    displaySrc: '/split3/4.png',
-  },
-  // ... rest of the portfolio items remain unchanged
-  {
-    id: 5,
-    isMultiple: true,
-    images: [{ src: '/portfolio/image5.jpg', alt: 'Portfolio image 5' }],
-    category: 'portrait',
-    displaySrc: '/split3/5.png',
-  },
-  {
-    id: 6,
-    isMultiple: true,
-    images: [
-      { src: '/portfolio/image6.jpg', alt: 'Portfolio image 6' },
-      { src: '/portfolio/image7.jpg', alt: 'Portfolio image 7' },
-      { src: '/portfolio/image8.jpg', alt: 'Portfolio image 8' },
-    ],
-    category: 'city',
-    displaySrc: '/split3/6.png',
-  },
-  {
-    id: 7,
-    isMultiple: true,
-    images: [{ src: '/portfolio/image7.jpg', alt: 'Portfolio image 7' }],
-    category: 'plants',
-    displaySrc: '/split3/7.png',
-  },
-  {
-    id: 8,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image8.jpg', alt: 'Portfolio image 8' }],
-    category: 'nyc',
-    displaySrc: '/split3/8.png',
-  },
-  {
-    id: 9,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image9.jpg', alt: 'Portfolio image 9' }],
-    category: 'chicago',
-    displaySrc: '/split3/9.png',
-  },
-  {
-    id: 10,
-    isMultiple: true,
-    images: [
-      { src: '/portfolio/image10.jpg', alt: 'Portfolio image 10' },
-      { src: '/portfolio/image11.jpg', alt: 'Portfolio image 11' },
-    ],
-    category: 'landscape',
-    displaySrc: '/split3/10.png',
-  },
-  {
-    id: 11,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image11.jpg', alt: 'Portfolio image 11' }],
-    category: 'portrait',
-    displaySrc: '/split3/11.png',
-  },
-  {
-    id: 12,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image12.jpg', alt: 'Portfolio image 12' }],
-    category: 'city',
-    displaySrc: '/split3/12.png',
-  },
-  {
-    id: 12,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image12.jpg', alt: 'Portfolio image 12' }],
-    category: 'city',
-    displaySrc: '/split3/13.png',
-  },
-  {
-    id: 12,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image12.jpg', alt: 'Portfolio image 12' }],
-    category: 'city',
-    displaySrc: '/split3/14.png',
-  },
-  {
-    id: 12,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image12.jpg', alt: 'Portfolio image 12' }],
-    category: 'city',
-    displaySrc: '/split3/15.png',
-  },
-  {
-    id: 12,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image12.jpg', alt: 'Portfolio image 12' }],
-    category: 'city',
-    displaySrc: '/split3/16.png',
-  },
-  {
-    id: 12,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image12.jpg', alt: 'Portfolio image 12' }],
-    category: 'city',
-    displaySrc: '/split3/17.png',
-  },
-  {
-    id: 12,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image12.jpg', alt: 'Portfolio image 12' }],
-    category: 'city',
-    displaySrc: '/split3/18.png',
-  },
-  {
-    id: 12,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image12.jpg', alt: 'Portfolio image 12' }],
-    category: 'city',
-    displaySrc: '/split3/19.png',
-  },
-  {
-    id: 12,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image12.jpg', alt: 'Portfolio image 12' }],
-    category: 'city',
-    displaySrc: '/split3/20.png',
-  },
-  {
-    id: 12,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image12.jpg', alt: 'Portfolio image 12' }],
-    category: 'city',
-    displaySrc: '/split3/21.png',
-  },
-  {
-    id: 12,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image12.jpg', alt: 'Portfolio image 12' }],
-    category: 'city',
-    displaySrc: '/split3/22.png',
-  },
-  {
-    id: 12,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image12.jpg', alt: 'Portfolio image 12' }],
-    category: 'city',
-    displaySrc: '/split3/23.png',
-  },
-  {
-    id: 12,
-    isMultiple: false,
-    images: [{ src: '/portfolio/image12.jpg', alt: 'Portfolio image 12' }],
-    category: 'city',
-    displaySrc: '/split3/24.png',
-  }
-];
+import { PortfolioItem, portfolioItems } from '@/utils/portfolioItems';
 
 export default function PortfolioGrid() {
   const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
@@ -250,18 +37,20 @@ export default function PortfolioGrid() {
   };
 
   return (
-    <div className="w-[95%]">
-      <div className="grid grid-cols-1 ml-4 max-sm:ml-12 sm:grid-cols-2 md:grid-cols-4 gap-y-[1px] gap-x-0.5">
+    <div className="w-[95%] max-sm:ml-[4px]">
+      <div className="grid grid-cols-4 ml-4 gap-y-[1px] gap-x-[1vh] sm:gap-x-1 max-sm:mx-auto ">
         {portfolioItems.map((item) => (
           <div 
             key={item.id} 
-            className="aspect-square relative cursor-pointer group overflow-hidden h-72"
+            className="aspect-square relative cursor-pointer group overflow-hidden"
+            style={{ height: 'calc(25vw - 15px)', maxHeight: '18rem' }}
             onClick={() => handleImageClick(item)}
           >
             <Image
               src={item.displaySrc}
               alt={item.images[0].alt || 'Default alt text'}
               fill
+              sizes="(max-width: 640px) 25vw, (max-width: 768px) 25vw, 25vw"
               className="object-cover hover:scale-105 transition-transform duration-300"
             />
           
