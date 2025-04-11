@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Parishka',
-  description: 'Graphic designer and photographer portfolio, showcasing landscape, portrait, and city photography.',
+  description: 'Writer at heart | Marketer at mind | Brain organizer | Failure Repackager | Queen of metaphors',
 };
 
 export default function RootLayout({
