@@ -10,8 +10,12 @@ export default function PortfolioGrid() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const handleImageClick = (item: PortfolioItem) => {
-    setSelectedItem(item);
-    setSelectedImageIndex(0);
+    // Only open modal for items where isMultiple is true
+    if (item.isMultiple) {
+      setSelectedItem(item);
+      setSelectedImageIndex(0);
+    }
+    // Do nothing for non-multiple items
   };
 
   const handleCloseModal = () => {
@@ -42,7 +46,7 @@ export default function PortfolioGrid() {
         {portfolioItems.map((item) => (
           <div 
             key={item.id} 
-            className="aspect-square relative cursor-pointer group overflow-hidden"
+            className={`aspect-square relative ${item.isMultiple ? 'cursor-pointer' : 'cursor-default'} group overflow-hidden`}
             style={{ height: 'calc(25vw - 15px)', maxHeight: '18rem' }}
             onClick={() => handleImageClick(item)}
           >
@@ -51,12 +55,18 @@ export default function PortfolioGrid() {
               alt={item.images[0].alt || 'Default alt text'}
               fill
               sizes="(max-width: 640px) 25vw, (max-width: 768px) 25vw, 25vw"
-              className="object-cover hover:scale-105 transition-transform duration-300"
+              className={`object-cover ${item.isMultiple ? 'hover:scale-105' : ''} transition-transform duration-300`}
             />
           
-            {/* Hover overlay */}
-            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity flex items-center justify-center opacity-0 group-hover:opacity-30">
-            </div>
+            {/* Hover overlay - only show for multiple images */}
+            {item.isMultiple && (
+              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity flex items-center justify-center opacity-0 group-hover:opacity-30">
+                {/* Optional: Add a visual indicator for multiple images */}
+                <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white rounded-full px-2 py-1">
+                  <span className="text-xs">{item.images.length}</span>
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </div>

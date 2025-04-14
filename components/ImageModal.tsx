@@ -76,7 +76,7 @@ export default function ImageModal({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          pointerEvents: 'none' // Allow clicks to pass through to background
+          pointerEvents: 'none' 
         }}
       >
         <div
@@ -106,18 +106,20 @@ export default function ImageModal({
                       e.stopPropagation();
                       if (onPrevImage) onPrevImage();
                     }}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-colors"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-70 hover:bg-opacity-90 text-white p-3 rounded-full transition-colors shadow-lg z-20"
+                    aria-label="Previous image"
                   >
-                    ←
+                    <span className="text-xl font-bold">←</span>
                   </button>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       if (onNextImage) onNextImage();
                     }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-70 hover:bg-opacity-90 text-white p-3 rounded-full transition-colors shadow-lg z-20"
+                    aria-label="Next image"
                   >
-                    →
+                    <span className="text-xl font-bold">→</span>
                   </button>
                   <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1">
                     {Array.from({ length: totalImages }).map((_, i) => (
@@ -147,23 +149,23 @@ export default function ImageModal({
 
             <div className="p-4 border-b border-gray-700 flex items-center gap-3 relative z-10">
               <div className="w-10 h-10 rounded-full bg-gray-200 relative overflow-hidden">
-                <Image src="/profile-placeholder.jpg" alt="Profile" fill className="object-cover" />
+                <Image src="/profile.jpeg" alt="Profile" fill className="object-cover" />
               </div>
-              <span className="font-semibold text-white">jordan</span>
+              <span className="font-semibold text-white">Parishka Gupta</span>
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 relative z-10">
               <div className="flex items-start gap-3 mb-4">
-                <div className="w-10 h-10 rounded-full bg-gray-200 relative overflow-hidden flex-shrink-0">
-                  <Image src="/profile-placeholder.jpg" alt="Profile" fill className="object-cover" />
-                </div>
+                {/* <div className="w-10 h-10 rounded-full bg-gray-200 relative overflow-hidden flex-shrink-0">
+                  <Image src="/profile.jpeg" alt="Profile" fill className="object-cover" />
+                </div> */}
                 <div>
-                  <span className="font-semibold text-white">jordan</span>
-                  <span className="ml-2 text-sm text-gray-200">Beautiful {image.category} shot from my recent trip. #photography #{image.category}</span>
+                  {/* <span className="font-semibold text-white">Parishka Gupta</span> */}
+                  <span className="ml-2 text-sm text-gray-200">Beautiful shot from my recent trip. #photography #{image.category}</span>
                 </div>
               </div>
 
-              <div className="text-xs text-gray-300 mt-3">2 HOURS AGO</div>
+              {/* <div className="text-xs text-gray-300 mt-3">2 HOURS AGO</div> */}
             </div>
 
             <div className="p-4 border-t border-gray-700 relative z-10">
