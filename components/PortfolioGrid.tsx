@@ -62,10 +62,7 @@ export default function PortfolioGrid() {
             {/* Hover overlay - only show for multiple images */}
             {item.isMultiple && (
               <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity flex items-center justify-center opacity-0 group-hover:opacity-30">
-                {/* Optional: Add a visual indicator for multiple images */}
-                <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white rounded-full px-2 py-1">
-                  <span className="text-xs">{item.images.length}</span>
-                </div>
+                {/* Removed the number indicator that was here */}
               </div>
             )}
           </div>
