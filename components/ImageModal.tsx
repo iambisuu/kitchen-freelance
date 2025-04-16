@@ -30,11 +30,35 @@ export default function ImageModal({
   totalImages = 1
 }: ImageModalProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
     setTimeout(onClose, 300); // Delay closing to allow animation to finish
   }, [onClose]);
+
+  // Handle touch events for swiping
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!isMultiple) return;
+    
+    const swipeThreshold = 50; // Minimum distance to register as a swipe
+    if (touchStart - touchEnd > swipeThreshold) {
+      // Swipe left - go to next image
+      if (onNextImage) onNextImage();
+    } else if (touchEnd - touchStart > swipeThreshold) {
+      // Swipe right - go to previous image
+      if (onPrevImage) onPrevImage();
+    }
+  };
 
   useEffect(() => {
     // Small delay to trigger the transition
@@ -57,7 +81,7 @@ export default function ImageModal({
 
   return ReactDOM.createPortal(
     <div
-      className="fixed inset-0 z-50" // Increased z-index
+      className="fixed inset-0 z-50"
       style={{
         backgroundColor: isOpen ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0)',
         transition: 'background-color 300ms'
@@ -80,15 +104,20 @@ export default function ImageModal({
         }}
       >
         <div
-          className={`max-w-5xl w-full max-h-[90vh] rounded-lg overflow-hidden z-60 flex flex-col md:flex-row transition-all duration-300 bg-black`}
+          className={`max-w-5xl w-[95%] mx-auto max-h-[90vh] rounded-lg overflow-hidden z-60 flex flex-col md:flex-row transition-all duration-300 bg-black`}
           style={{
             opacity: isOpen ? 1 : 0,
             transform: isOpen ? 'scale(1)' : 'scale(0.95)',
-            pointerEvents: 'auto' // Re-enable pointer events for the modal
+            pointerEvents: 'auto'
           }}
         >
-          {/* Image container */}
-          <div className="w-full md:w-2/3 relative bg-black">
+          {/* Image container with touch events */}
+          <div 
+            className="w-full md:w-2/3 relative bg-black"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             <div className="aspect-square relative">
               <Image
                 src={image.src}
@@ -98,7 +127,7 @@ export default function ImageModal({
                 priority
               />
 
-              {/* Navigation arrows */}
+              {/* Navigation arrows - only visible on non-mobile */}
               {isMultiple && (
                 <>
                   <button
@@ -106,7 +135,7 @@ export default function ImageModal({
                       e.stopPropagation();
                       if (onPrevImage) onPrevImage();
                     }}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-70 hover:bg-opacity-90 text-white p-3 rounded-full transition-colors shadow-lg z-20"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-70 hover:bg-opacity-90 text-white p-3 rounded-full transition-colors shadow-lg z-20 hidden md:block"
                     aria-label="Previous image"
                   >
                     <span className="text-xl font-bold">←</span>
@@ -116,11 +145,14 @@ export default function ImageModal({
                       e.stopPropagation();
                       if (onNextImage) onNextImage();
                     }}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-70 hover:bg-opacity-90 text-white p-3 rounded-full transition-colors shadow-lg z-20"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-70 hover:bg-opacity-90 text-white p-3 rounded-full transition-colors shadow-lg z-20 hidden md:block"
                     aria-label="Next image"
                   >
                     <span className="text-xl font-bold">→</span>
                   </button>
+                  
+             
+                  
                   <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1">
                     {Array.from({ length: totalImages }).map((_, i) => (
                       <div
