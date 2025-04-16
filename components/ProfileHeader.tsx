@@ -45,7 +45,7 @@ export default function ProfileHeader() {
         </div>
         
         {/* Social Links */}
-        <div className="flex gap-5 md:gap-8 justify-center md:justify-start">
+        <div className="flex gap-2 md:gap-3 justify-center md:justify-start">
           {/* <a href="#" className="text-gray-700 hover:text-gray-900 transition-colors">
             <FaGithub size={20} className="md:h-6 md:w-6" />
           </a> */}

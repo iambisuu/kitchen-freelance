@@ -11,6 +11,8 @@ export default function CustomCursor({ containerRef }: CustomCursorProps) {
   const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const container = containerRef.current;
+    
     const handleMouseMove = (e: MouseEvent) => {
       const x = e.clientX + window.scrollX;
       const y = e.clientY + window.scrollY;
@@ -29,45 +31,32 @@ export default function CustomCursor({ containerRef }: CustomCursorProps) {
         return;
       }
 
-      // Original container logic
-      if (!containerRef.current) {
-        setVisible(false);
-        return;
-      }
-
-      const rect = containerRef.current.getBoundingClientRect();
+      // Check if the element under cursor has isMultiple=true
+      const targetElement = e.target as Element;
+      const portfolioItem = targetElement.closest('[data-is-multiple="true"]');
       
-      // Check if mouse is inside the container
-      if (
-        e.clientX >= rect.left &&
-        e.clientX <= rect.right &&
-        e.clientY >= rect.top &&
-        e.clientY <= rect.bottom
-      ) {
-        // Show custom cursor
+      if (portfolioItem) {
+        // Show custom cursor only for multiple items
         setVisible(true);
         document.body.style.cursor = 'none';
         
-        if (containerRef.current) {
-          containerRef.current.style.cursor = 'none';
-          // Apply cursor:none to direct children only
-          const children = containerRef.current.children;
-          for (let i = 0; i < children.length; i++) {
-            (children[i] as HTMLElement).style.cursor = 'none';
-          }
-        }
+        // Apply cursor:none to the specific multiple item and its children
+        portfolioItem.querySelectorAll('*').forEach(el => {
+          (el as HTMLElement).style.cursor = 'none';
+        });
+        (portfolioItem as HTMLElement).style.cursor = 'none';
       } else {
-        // Hide custom cursor
+        // For non-multiple items or outside the container, use default cursor
         setVisible(false);
         document.body.style.cursor = 'auto';
         
-        if (containerRef.current) {
-          containerRef.current.style.cursor = 'auto';
-          // Reset cursor for direct children
-          const children = containerRef.current.children;
-          for (let i = 0; i < children.length; i++) {
-            (children[i] as HTMLElement).style.cursor = 'auto';
-          }
+        if (container) {
+          container.style.cursor = 'auto';
+          // Reset cursor for all elements
+          const allElements = container.querySelectorAll('*');
+          allElements.forEach(el => {
+            (el as HTMLElement).style.cursor = 'auto';
+          });
         }
       }
     };
@@ -83,12 +72,12 @@ export default function CustomCursor({ containerRef }: CustomCursorProps) {
     
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('mouseleave', handleMouseLeave);
       document.body.style.cursor = 'auto';
       
-      if (containerRef.current) {
-        containerRef.current.style.cursor = 'auto';
-        const children = containerRef.current.children;
+      if (container) {
+        container.style.cursor = 'auto';
+        const children = container.children;
         for (let i = 0; i < children.length; i++) {
           (children[i] as HTMLElement).style.cursor = 'auto';
         }

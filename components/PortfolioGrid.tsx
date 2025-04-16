@@ -49,6 +49,7 @@ export default function PortfolioGrid() {
             className={`aspect-square relative ${item.isMultiple ? 'cursor-pointer' : 'cursor-default'} group overflow-hidden`}
             style={{ height: 'calc(25vw - 15px)', maxHeight: '18rem' }}
             onClick={() => handleImageClick(item)}
+            data-is-multiple={item.isMultiple.toString()} // Add data attribute to identify multiple items
           >
             <Image
               src={item.displaySrc}
