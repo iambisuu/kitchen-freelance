@@ -113,12 +113,16 @@ export default function ImageModal({
         >
           {/* Image container with touch events */}
           <div 
-            className="w-full md:w-2/3 relative bg-black"
+            className="w-full md:w-2/3 relative bg-black flex-shrink-0"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
+            style={{ 
+              aspectRatio: '1/1',
+              maxHeight: '90vh'
+            }}
           >
-            <div className="aspect-square relative">
+            <div className="h-full w-full relative">
               <Image
                 src={image.src}
                 alt={image.alt}
