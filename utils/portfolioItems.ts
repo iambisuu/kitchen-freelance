@@ -167,8 +167,8 @@ export interface PortfolioImage {
     },
     {
       id: 17,
-      isMultiple: false,
-      images: [{ src: '/portfolio/image12.jpg', alt: 'Portfolio image 12' }],
+      isMultiple: true,
+      images: [{ src: '/inside/13/a.png', alt: 'Portfolio image 12' }],
       category: 'city',
       displaySrc: '/split3/17.png',
     },
